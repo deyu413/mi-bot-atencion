@@ -805,11 +805,28 @@ ul {
 .tabs-or-accordion .tab-panel.active {
     display: block; /* Mostrar panel activo */
 }
+
+/* --- INICIO CORRECCIÓN --- */
 .tabs-or-accordion .tab {
-    /* Estilos normales */
+    /* Estilos para botones de tab/acordeón */
+    padding: 10px;
+    margin-bottom: 5px;
+    background: #e0e0e0; /* Ejemplo de fondo */
+    border: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    /* Añade cualquier otro estilo que necesites para los botones */
 }
+/* --- FIN CORRECCIÓN --- */
+
 .tabs-or-accordion .tab.active {
     /* Estilos para el trigger activo (ej. background diferente, negrita) */
     font-weight: bold;
     background-color: #ccc; /* Ejemplo */
 }
+
+/* --- POSIBLE ERROR ADICIONAL --- */
+/* ¡OJO! Parece que hay una llave '}' extra al final de tu archivo [source: 157]. */
+/* Revisa la última línea del archivo y elimina la llave '}' si sobra. */
+/* Esa llave podría estar cerrando la media query @media (max-width: 768px) antes de tiempo. */
