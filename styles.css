@@ -216,14 +216,15 @@ ul {
     z-index: 1100;
     /* Estilos más complejos para grids como el de Intercom irían aquí */
 }
-.nav-item:hover .nav-submenu {
-    /* display: block; */ /* Esto puede funcionar para hover simple, JS es mejor para control */
-}
+
+/* Eliminamos el bloque .nav-item:hover .nav-submenu */
+
 .product-submenu, .resources-submenu {
     /* Estilos específicos para layouts complejos de submenú */
     min-width: 500px; /* Ejemplo */
     /* ...más estilos de grid/flex... */
 }
+
 
 .header-ctas {
     display: flex;
