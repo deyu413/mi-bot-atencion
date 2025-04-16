@@ -1,69 +1,424 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+/* ========================
+   Estilos Globales
+======================== */
+
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Arial', sans-serif;
+    color: #ffffff;
+    background-color: #1a1a1a;
+    background-image: linear-gradient(135deg, #1a1a1a, #0d0d0d);
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+  
+  /* ========================
+     Contenedores
+  ======================== */
+  
+  .main-container,
+  .section,
+  .hero,
+  .footer-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 2rem;
+  }
+  
+  .section {
+    margin-top: 60px;
+    background: linear-gradient(90deg, #00c6ff, #0072ff);
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+  }
+  
+  /* ========================
+     Encabezado y Navegación
+  ======================== */
+  
+  header {
+    background: #111;
+    padding: 1rem 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  
+  .navbar {
     display: flex;
-    height: 100vh;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
   }
   
-  #chat-container {
-    background-color: #fff;
-    width: 100%;
+  .navbar .logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #39ff14;
+    text-decoration: none;
+  }
+  
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+  }
+  
+  nav a {
+    text-decoration: none;
+    color: #ffffff;
+    transition: color 0.3s ease;
+  }
+  
+  nav a:hover {
+    color: #ff007f;
+  }
+  
+  /* ========================
+     Hero Section
+  ======================== */
+  
+  .hero {
+    padding: 100px 20px;
+    text-align: center;
+  }
+  
+  .hero h1 {
+    font-size: 3rem;
+    color: #39ff14;
+    margin-bottom: 20px;
+  }
+  
+  .hero p {
+    font-size: 1.2rem;
     max-width: 600px;
-    height: 90vh;
+    margin: auto;
+    margin-bottom: 30px;
+  }
+  
+  .btn-primary {
+    background-color: #ff007f;
+    padding: 15px 30px;
+    color: white;
+    font-size: 1rem;
+    border: none;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-primary:hover {
+    background-color: #ff77a8;
+    transform: scale(1.05);
+  }
+  /* ========================
+   Sección de Características
+======================== */
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2rem;
+    margin-top: 30px;
+  }
+  
+  .feature-item {
+    background-color: #262626;
+    border: 1px solid #444;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 255, 135, 0.2);
+    transition: transform 0.3s;
+  }
+  
+  .feature-item:hover {
+    transform: translateY(-5px);
+  }
+  
+  .feature-item h3 {
+    color: #00ffea;
+    margin-bottom: 10px;
+  }
+  
+  .feature-item p {
+    font-size: 0.95rem;
+  }
+  
+  /* ========================
+     Sección de Precios
+  ======================== */
+  
+  .pricing-table {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 30px;
+  }
+  
+  .pricing-card {
+    background-color: #222;
+    padding: 2rem;
+    border-radius: 16px;
+    border: 1px solid #333;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    width: 300px;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .pricing-card.popular {
+    border: 2px solid #ff007f;
+    box-shadow: 0 0 30px rgba(255, 0, 127, 0.4);
+  }
+  
+  .pricing-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .pricing-card h3 {
+    color: #39ff14;
+    margin-bottom: 10px;
+  }
+  
+  .pricing-card .price {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    color: #ffffff;
+  }
+  
+  .pricing-card ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 15px;
+  }
+  
+  .pricing-card ul li {
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+  }
+  
+  /* ========================
+     Formulario de Contacto
+  ======================== */
+  
+  .contact-form {
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    max-width: 500px;
+    margin: auto;
+    gap: 15px;
+    margin-top: 30px;
+  }
+  
+  .contact-form label {
+    font-weight: bold;
+  }
+  
+  .contact-form input,
+  .contact-form textarea {
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background-color: #333;
+    color: #fff;
+    font-size: 1rem;
+  }
+  
+  .contact-form input:focus,
+  .contact-form textarea:focus {
+    outline: none;
+    border: 1px solid #39ff14;
+  }
+  
+  /* ========================
+     Chat Simulado
+  ======================== */
+  
+  .demo-container {
+    background-color: #111;
+    padding: 2rem;
+    border-radius: 12px;
+    margin-top: 40px;
+    box-shadow: 0 0 15px rgba(57, 255, 20, 0.1);
   }
   
   #chat-box {
-    flex: 1;
-    padding: 20px;
+    background: #222;
+    height: 300px;
     overflow-y: auto;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
   }
   
-  .message {
+  .chat-message {
     margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 4px;
-    max-width: 80%;
   }
   
-  .user {
-    background-color: #d1e7dd;
-    align-self: flex-end;
+  .chat-message.bot {
+    color: #00eaff;
   }
   
-  .bot {
-    background-color: #f8d7da;
-    align-self: flex-start;
+  .chat-message.user {
+    text-align: right;
+    color: #ff007f;
   }
   
   #chat-form {
     display: flex;
-    padding: 10px;
-    border-top: 1px solid #ccc;
+    gap: 10px;
   }
   
   #user-input {
     flex: 1;
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 6px;
+    border: none;
+    background-color: #333;
+    color: #fff;
   }
   
-  button {
-    padding: 10px 15px;
-    background-color: #0d6efd;
-    color: white;
+  /* Botón reutilizado */
+  .button {
+    background-color: #ff007f;
     border: none;
-    margin-left: 10px;
-    border-radius: 4px;
+    border-radius: 5px;
+    padding: 12px 25px;
+    color: #fff;
+    font-size: 16px;
     cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .button:hover {
+    background-color: #ff77a8;
+    transform: scale(1.05);
+  }
+  /* ========================
+   Footer
+======================== */
+
+.footer {
+    background-color: #0d0d0d;
+    padding: 60px 20px 30px;
+    color: #ccc;
+    border-top: 2px solid #222;
+  }
+  
+  .footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: auto;
+  }
+  
+  .footer-branding {
+    flex: 1;
+    min-width: 250px;
+  }
+  
+  .footer-branding h3 {
+    font-size: 1.5rem;
+    color: #39ff14;
+    margin-bottom: 10px;
+  }
+  
+  .footer-links {
+    display: flex;
+    flex: 2;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  
+  .footer-links h4 {
+    color: #ffffff;
+    margin-bottom: 10px;
+  }
+  
+  .footer-links ul {
+    list-style: none;
+  }
+  
+  .footer-links li {
+    margin-bottom: 8px;
+  }
+  
+  .footer-links a {
+    color: #ccc;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .footer-links a:hover {
+    color: #ff007f;
+  }
+  
+  .footer-bottom {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 0.9rem;
+    color: #888;
+  }
+  
+  /* ========================
+     Transiciones y extras
+  ======================== */
+  
+  a,
+  .button,
+  input,
+  textarea {
+    transition: all 0.3s ease;
+  }
+  
+  /* ========================
+     Media Queries (Responsive)
+  ======================== */
+  
+  @media (max-width: 768px) {
+    .navbar {
+      flex-direction: column;
+      gap: 1rem;
+    }
+  
+    nav ul {
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+  
+    .pricing-table {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .features {
+      grid-template-columns: 1fr;
+    }
+  
+    .footer-container {
+      flex-direction: column;
+      text-align: center;
+    }
+  
+    .contact-form {
+      width: 100%;
+      padding: 0 1rem;
+    }
+  
+    .hero h1 {
+      font-size: 2.2rem;
+    }
+  
+    .hero p {
+      font-size: 1rem;
+    }
   }
   
