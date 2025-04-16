@@ -1,33 +1,106 @@
-const form = document.getElementById('chat-form');
-const input = document.getElementById('user-input');
-const chatBox = document.getElementById('chat-box');
+document.addEventListener('DOMContentLoaded', () => {
 
-form.addEventListener('submit', function (e) {
-  e.preventDefault();
-  const userMessage = input.value.trim();
-  if (!userMessage) return;
+    // --- 1. MENÚ MÓVIL (HAMBURGUESA) ---
+    const hamburgerButton = document.querySelector('.hamburger-menu-button');
+    const navigationMenu = document.querySelector('.navigation-menu'); // El contenedor del menú que se oculta/muestra
 
-  appendMessage(userMessage, 'user');
-  input.value = '';
+    if (hamburgerButton && navigationMenu) {
+        hamburgerButton.addEventListener('click', () => {
+            // Alterna una clase en el menú para mostrarlo/ocultarlo (definida en CSS)
+            navigationMenu.classList.toggle('is-open');
 
-  setTimeout(() => {
-    const botResponse = generateBotResponse(userMessage);
-    appendMessage(botResponse, 'bot');
-  }, 800);
-});
+            // Opcional: Cambiar el aria-label o icono del botón hamburguesa
+            const isOpen = navigationMenu.classList.contains('is-open');
+            hamburgerButton.setAttribute('aria-expanded', isOpen);
+            // Podrías cambiar el icono aquí si usas SVGs diferentes para abrir/cerrar
+        });
+    } else {
+        console.warn("Elementos del menú móvil no encontrados.");
+    }
 
-function appendMessage(message, sender) {
-  const msgDiv = document.createElement('div');
-  msgDiv.classList.add('message', sender);
-  msgDiv.textContent = message;
-  chatBox.appendChild(msgDiv);
-  chatBox.scrollTop = chatBox.scrollHeight;
-}
+    // --- 2. MENÚS DESPLEGABLES (DROPDOWNS) ---
+    const dropdownItems = document.querySelectorAll('.nav-item.dropdown');
 
-function generateBotResponse(msg) {
-  msg = msg.toLowerCase();
-  if (msg.includes('hola')) return '¡Hola! ¿En qué puedo ayudarte hoy?';
-  if (msg.includes('precio')) return 'Nuestros precios dependen del producto. ¿Qué deseas saber exactamente?';
-  if (msg.includes('gracias')) return '¡De nada! ¿Necesitas algo más?';
-  return 'Lo siento, no entendí tu mensaje. ¿Podrías repetirlo de otra forma?';
-}
+    dropdownItems.forEach(item => {
+        const button = item.querySelector('.nav-item-button');
+        const submenu = item.querySelector('.nav-submenu');
+
+        if (button && submenu) {
+            button.addEventListener('click', (event) => {
+                event.stopPropagation(); // Evita que el click se propague al listener del documento
+
+                // Alterna la visibilidad del submenú actual
+                const isActive = submenu.classList.toggle('is-active');
+                button.setAttribute('aria-expanded', isActive);
+
+                // Opcional: Cerrar otros submenús abiertos
+                closeOtherDropdowns(item);
+            });
+        }
+    });
+
+    // Función para cerrar otros desplegables
+    function closeOtherDropdowns(currentItem) {
+        dropdownItems.forEach(item => {
+            if (item !== currentItem) {
+                const button = item.querySelector('.nav-item-button');
+                const submenu = item.querySelector('.nav-submenu');
+                if (submenu && submenu.classList.contains('is-active')) {
+                    submenu.classList.remove('is-active');
+                    button.setAttribute('aria-expanded', 'false');
+                }
+            }
+        });
+    }
+
+    // Opcional: Cerrar desplegables si se hace clic fuera de ellos
+    document.addEventListener('click', () => {
+        closeOtherDropdowns(null); // Llama a la función sin un item actual para cerrarlos todos
+    });
+
+    // Evitar que el clic dentro del submenú lo cierre
+    document.querySelectorAll('.nav-submenu').forEach(submenu => {
+        submenu.addEventListener('click', (event) => {
+            event.stopPropagation();
+        });
+    });
+
+
+    // --- 3. PESTAÑAS / ACORDEONES EN TARJETAS DE PRODUCTO ---
+    // Asume que cada tarjeta (.product-card) contiene su propio conjunto de triggers y panels
+    const productCards = document.querySelectorAll('.product-card');
+
+    productCards.forEach(card => {
+        const triggers = card.querySelectorAll('.tabs-or-accordion .tab'); // O la clase que uses para el trigger
+        const panels = card.querySelectorAll('.tabs-or-accordion .tab-panel'); // O la clase para el panel
+
+        if (triggers.length > 0 && triggers.length === panels.length) {
+            triggers.forEach((trigger, index) => {
+                trigger.addEventListener('click', () => {
+                    // 1. Ocultar todos los paneles y desactivar triggers dentro de ESTA tarjeta
+                    triggers.forEach((t, i) => {
+                        t.classList.remove('active');
+                        t.setAttribute('aria-expanded', 'false');
+                        panels[i].classList.remove('active');
+                        // Podrías añadir aria-hidden aquí también
+                    });
+
+                    // 2. Activar el trigger clickeado y mostrar su panel
+                    trigger.classList.add('active');
+                    trigger.setAttribute('aria-expanded', 'true');
+                    panels[index].classList.add('active');
+                });
+            });
+        } else if (triggers.length > 0) {
+             console.warn("Número de triggers y panels no coincide en una tarjeta de producto:", card);
+        }
+    });
+
+    // --- Puedes añadir más funcionalidades aquí ---
+    // Por ejemplo:
+    // - Animaciones al hacer scroll (Intersection Observer)
+    // - Manejo de sliders/carruseles para testimonios
+    // - Inicialización de librerías externas (si las usas)
+    // - Validaciones de formularios (si tienes)
+
+}); // Fin de DOMContentLoaded

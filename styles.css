@@ -453,15 +453,15 @@ ul {
     margin-bottom: 20px;
     flex-grow: 1; /* Ocupa espacio disponible */
 }
-.product-card .tabs-or-accordion .tab {
+.product-card .tabs-or-accordion .tab { /* O simplemente .tabs-or-accordion .tab si esa es tu estructura */
     /* Estilos para botones de tab/acordeón */
-    padding: 10px;
-    margin-bottom: 5px;
-    background: #e0e0e0;
-    border: none;
-    width: 100%;
-    text-align: left;
-    cursor: pointer;
+    padding: 10px;             /* <-- Declaración CSS */
+    margin-bottom: 5px;        /* <-- Declaración CSS */
+    background: #e0e0e0;       /* <-- Declaración CSS */
+    border: none;              /* <-- Declaración CSS */
+    width: 100%;               /* <-- Declaración CSS */
+    text-align: left;          /* <-- Declaración CSS */
+    cursor: pointer;           /* <-- Declaración CSS */
 }
 .product-card .tabs-or-accordion .tab.active {
     background: #ccc;
@@ -772,4 +772,44 @@ ul {
     .hero-bg-mobile { display: block; } /* Mostrar en móvil */
 
     /* Ajustes adicionales para otras secciones... */
+}
+/* Para Menú Móvil */
+@media (max-width: 768px) { /* O el breakpoint que uses */
+    .navigation-menu {
+        display: none; /* Oculto por defecto */
+        /* ... otros estilos para posicionarlo ... */
+    }
+    .navigation-menu.is-open {
+        display: block; /* Mostrar al añadir la clase */
+    }
+}
+
+/* Para Desplegables */
+.nav-submenu {
+    display: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    /* ... otros estilos de posicionamiento ... */
+}
+.nav-submenu.is-active {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Para Pestañas/Acordeones */
+.tabs-or-accordion .tab-panel {
+    display: none; /* Oculto por defecto */
+}
+.tabs-or-accordion .tab-panel.active {
+    display: block; /* Mostrar panel activo */
+}
+.tabs-or-accordion .tab {
+    /* Estilos normales */
+}
+.tabs-or-accordion .tab.active {
+    /* Estilos para el trigger activo (ej. background diferente, negrita) */
+    font-weight: bold;
+    background-color: #ccc; /* Ejemplo */
 }
