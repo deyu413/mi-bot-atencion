@@ -25,7 +25,11 @@
     <link rel="preload" href="/fonts/tu-fuente-regular.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
     <link rel="preload" href="/fonts/tu-fuente-bold.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
 
-    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/header.css" />
+    <link rel="stylesheet" href="/css/hero.css" />
+    <link rel="stylesheet" href="/css/sections.css" />
+    <link rel="stylesheet" href="/css/footer.css" />
 
     [source: 5, 9]
 
@@ -293,6 +297,5 @@
         [source: 96]
 
     </div>
-</footer> <script src="/static/app.js" defer></script>
 </body>
 </html>
