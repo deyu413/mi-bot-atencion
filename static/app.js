@@ -2,17 +2,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- 1. MENÚ MÓVIL (HAMBURGUESA) ---
     const hamburgerButton = document.querySelector('.hamburger-menu-button');
-    const navigationMenu = document.querySelector('.navigation-menu'); // El contenedor del menú que se oculta/muestra
+    const navigationMenu = document.querySelector('.navigation-menu');
 
     if (hamburgerButton && navigationMenu) {
         hamburgerButton.addEventListener('click', () => {
-            // Alterna una clase en el menú para mostrarlo/ocultarlo (definida en CSS)
-            navigationMenu.classList.toggle('is-open');
-
-            // Opcional: Cambiar el aria-label o icono del botón hamburguesa
-            const isOpen = navigationMenu.classList.contains('is-open');
+            const isOpen = navigationMenu.classList.toggle('is-open');
             hamburgerButton.setAttribute('aria-expanded', isOpen);
-            // Podrías cambiar el icono aquí si usas SVGs diferentes para abrir/cerrar
+            // Bloquear/desbloquear scroll del body
+            document.body.style.overflow = isOpen ? 'hidden' : '';
         });
     } else {
         console.warn("Elementos del menú móvil no encontrados.");
@@ -26,81 +23,100 @@ document.addEventListener('DOMContentLoaded', () => {
         const submenu = item.querySelector('.nav-submenu');
 
         if (button && submenu) {
+            // Click en el botón para abrir/cerrar
             button.addEventListener('click', (event) => {
-                event.stopPropagation(); // Evita que el click se propague al listener del documento
+                event.stopPropagation(); // Prevenir cierre inmediato por click en documento
+                const isAlreadyActive = submenu.classList.contains('is-active');
 
-                // Alterna la visibilidad del submenú actual
-                const isActive = submenu.classList.toggle('is-active');
-                button.setAttribute('aria-expanded', isActive);
+                // Cerrar todos los demás antes de abrir/cerrar este
+                closeOtherDropdowns(null); // Cerrar todos primero
 
-                // Opcional: Cerrar otros submenús abiertos
-                closeOtherDropdowns(item);
+                // Si no estaba activo, abrirlo
+                if (!isAlreadyActive) {
+                    submenu.classList.add('is-active');
+                    button.setAttribute('aria-expanded', 'true');
+                } else {
+                    // Si ya estaba activo (o se volvió a hacer click), asegurarse que se cierre
+                     submenu.classList.remove('is-active');
+                     button.setAttribute('aria-expanded', 'false');
+                }
             });
         }
     });
 
-    // Función para cerrar otros desplegables
-    function closeOtherDropdowns(currentItem) {
+    // Función para cerrar todos los desplegables activos
+    function closeOtherDropdowns(currentItem) { // currentItem no se usa aquí, pero mantenemos firma por si acaso
         dropdownItems.forEach(item => {
-            if (item !== currentItem) {
-                const button = item.querySelector('.nav-item-button');
-                const submenu = item.querySelector('.nav-submenu');
-                if (submenu && submenu.classList.contains('is-active')) {
-                    submenu.classList.remove('is-active');
-                    button.setAttribute('aria-expanded', 'false');
-                }
+            const button = item.querySelector('.nav-item-button');
+            const submenu = item.querySelector('.nav-submenu');
+            if (submenu && submenu.classList.contains('is-active')) {
+                 submenu.classList.remove('is-active');
+                 button.setAttribute('aria-expanded', 'false');
             }
         });
     }
 
-    // Opcional: Cerrar desplegables si se hace clic fuera de ellos
-    document.addEventListener('click', () => {
-        closeOtherDropdowns(null); // Llama a la función sin un item actual para cerrarlos todos
+    // Cerrar desplegables si se hace clic fuera de ellos
+    document.addEventListener('click', (event) => {
+         // Comprobar si el clic fue fuera de un submenú o su botón
+         const isClickInsideDropdown = event.target.closest('.nav-item.dropdown');
+         if (!isClickInsideDropdown) {
+            closeOtherDropdowns(null);
+         }
     });
 
-    // Evitar que el clic dentro del submenú lo cierre
-    document.querySelectorAll('.nav-submenu').forEach(submenu => {
-        submenu.addEventListener('click', (event) => {
-            event.stopPropagation();
-        });
-    });
+    // Ya no necesitamos parar la propagación dentro del submenú con este enfoque
 
-
-    // --- 3. PESTAÑAS / ACORDEONES EN TARJETAS DE PRODUCTO ---
-    // Asume que cada tarjeta (.product-card) contiene su propio conjunto de triggers y panels
-    const productCards = document.querySelectorAll('.product-card');
-
+    // --- 3. PESTAÑAS / ACORDEONES (Código existente, sin uso actual) ---
+    // Si añades tabs/acordeones más adelante, este código puede servir de base
+    const productCards = document.querySelectorAll('.product-card'); // Cambiar si usas otra clase
     productCards.forEach(card => {
-        const triggers = card.querySelectorAll('.tabs-or-accordion .tab'); // O la clase que uses para el trigger
-        const panels = card.querySelectorAll('.tabs-or-accordion .tab-panel'); // O la clase para el panel
-
-        if (triggers.length > 0 && triggers.length === panels.length) {
-            triggers.forEach((trigger, index) => {
+        const triggers = card.querySelectorAll('.tabs-or-accordion .tab');
+        const panels = card.querySelectorAll('.tabs-or-accordion .tab-panel');
+         if (triggers.length > 0 && triggers.length === panels.length) {
+             triggers.forEach((trigger, index) => {
                 trigger.addEventListener('click', () => {
-                    // 1. Ocultar todos los paneles y desactivar triggers dentro de ESTA tarjeta
-                    triggers.forEach((t, i) => {
-                        t.classList.remove('active');
-                        t.setAttribute('aria-expanded', 'false');
-                        panels[i].classList.remove('active');
-                        // Podrías añadir aria-hidden aquí también
-                    });
-
-                    // 2. Activar el trigger clickeado y mostrar su panel
-                    trigger.classList.add('active');
-                    trigger.setAttribute('aria-expanded', 'true');
-                    panels[index].classList.add('active');
+                    triggers.forEach((t, i) => { t.classList.remove('active'); t.setAttribute('aria-expanded', 'false'); panels[i].classList.remove('active'); });
+                    trigger.classList.add('active'); trigger.setAttribute('aria-expanded', 'true'); panels[index].classList.add('active');
                 });
             });
         } else if (triggers.length > 0) {
-             console.warn("Número de triggers y panels no coincide en una tarjeta de producto:", card);
+             console.warn("Número de triggers y panels no coincide:", card);
         }
     });
 
-    // --- Puedes añadir más funcionalidades aquí ---
-    // Por ejemplo:
-    // - Animaciones al hacer scroll (Intersection Observer)
-    // - Manejo de sliders/carruseles para testimonios
-    // - Inicialización de librerías externas (si las usas)
-    // - Validaciones de formularios (si tienes)
+    // --- 4. ANIMACIÓN FADE-IN AL HACER SCROLL ---
+    const fadeElements = document.querySelectorAll('.fade-in-element');
+
+    if (typeof IntersectionObserver === 'function' && fadeElements.length > 0) { // Check if IntersectionObserver is supported
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1 // Umbral de visibilidad (10%)
+        };
+
+        const observerCallback = (entries, observer) => {
+            entries.forEach(entry => {
+                // Cuando el elemento entra en la vista
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target); // Dejar de observarlo una vez animado
+                }
+                // No necesitamos hacer nada cuando sale (entry.isIntersecting == false)
+            });
+        };
+
+        const intersectionObserver = new IntersectionObserver(observerCallback, observerOptions);
+
+        fadeElements.forEach(el => {
+            intersectionObserver.observe(el);
+        });
+    } else if (fadeElements.length > 0) {
+        // Fallback muy simple si IntersectionObserver no está soportado (navegadores muy antiguos)
+        // Simplemente muestra todos los elementos directamente
+        fadeElements.forEach(el => {
+            el.classList.add('is-visible');
+        });
+    }
 
 }); // Fin de DOMContentLoaded
